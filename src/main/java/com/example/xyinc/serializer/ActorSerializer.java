@@ -37,9 +37,9 @@ public class ActorSerializer extends StdSerializer<Actor>  {
 	        if (value.getBirthDate() != null) jgen.writeStringField("birthDate", dateFormat.format(value.getBirthDate()));
 	        else jgen.writeNullField("birthDate");
         	if (value.getNationality() != null) jgen.writeStringField("nationality", value.getNationality());
-        	else jgen.writeNullField("description");
+        	else jgen.writeNullField("nationality");
         	if (value.getGender() != null) jgen.writeStringField("gender", value.getGender().getDescription());
-        	else jgen.writeNullField("budget");
+        	else jgen.writeNullField("gender");
 	        // movies
         	jgen.writeArrayFieldStart("movies");
         	if (value.getMovies() != null) {
