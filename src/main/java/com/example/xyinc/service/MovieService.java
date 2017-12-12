@@ -7,22 +7,37 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.example.xyinc.model.Actor;
 import com.example.xyinc.model.Category;
 import com.example.xyinc.model.Movie;
+import com.example.xyinc.repository.ActorDao;
 import com.example.xyinc.repository.CategoryDao;
 import com.example.xyinc.repository.MovieDao;
 
 @Service
 public class MovieService {
-	
+
 	private Logger logger = Logger.getLogger(this.getClass());
 
 	@Autowired
 	private MovieDao dao;
 	
-	@Autowired CategoryDao categoryDao;
+	@Autowired
+	CategoryDao categoryDao;
+
+	@Autowired
+	ActorDao actorDao;
 
 	public ResponseEntity<Movie> createMovie(Movie movie) {
+
+		if (movie.getActors() != null) {
+			for (Actor actor : movie.getActors()) {
+				if (actorDao.findOne(actor.getId()) == null) {
+					logger.error("Error trying to crete movie. Actor " + actor.getId() + " not found");
+					return ResponseEntity.notFound().build();
+				}
+			}
+		}
 
 		if (movie.getCategory() != null) {
 			Category category = categoryDao.findOne(movie.getCategory().getId());
